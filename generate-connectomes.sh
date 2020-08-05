@@ -85,7 +85,7 @@ do
 		echo "creating connectome for diffusion measure ${MEAS}"
 		tcksample ${track} ${MEAS}.mif mean_${MEAS}_per_streamline.csv -stat_tck mean -use_tdi_fraction -nthreads ${ncores} -force
 		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -tck_weights_in weights.csv -stat_edge mean -symmetric -zero_diagonal -nthreads ${ncores} -force
-		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -tck_weights_in weights.csv -stat_edge mean -symmetric -zero_diagonal -nthreads ${ncores} -force
+		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_density.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -tck_weights_in weights.csv -stat_edge mean -symmetric -zero_diagonal -nthreads ${ncores} -force
 
 	fi
 done
