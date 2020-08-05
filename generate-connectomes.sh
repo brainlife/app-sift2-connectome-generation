@@ -122,6 +122,8 @@ if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	for csvs in ./connectomes/*.csv
 	do
 		sed -e 's/\s\+/,/g' ${csvs} > ${csvs}
+		cat tmp.csv > ${csvs}
+		rm -rf tmp.csv
 	done
 else
 	echo "something went wrong"
