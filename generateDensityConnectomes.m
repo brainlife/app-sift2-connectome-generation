@@ -28,7 +28,7 @@ count_density = count ./ num_streamlines;
 length_density = length ./ num_streamlines;
 
 % output densities
-dlmwrite('density.csv',count_density);
-dlmwrite('denlen.csv',length_density);
+dlmwrite(fullfile(topdir,'connectomes','density.csv'),count_density);
+dlmwrite(fullfile(topdir,'connectomes''denlen.csv'),length_density);
 
 end
