@@ -57,7 +57,7 @@ do
 		tcksample ${track} ${MEAS}.mif mean_${MEAS}_per_streamline.csv -stat_tck mean -use_tdi_fraction -nthreads ${ncores} -force
 		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -stat_edge mean -symmetric -zero_diagonal -nthreads ${ncores} -force
 		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_density.csv -scale_file mean_${MEAS}_per_streamline.csv -stat_edge mean -scale_invnodevol -symmetric -zero_diagonal -nthreads ${ncores} -force
-		fi
+	fi
 done
 
 # count network
@@ -87,6 +87,12 @@ fi
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	echo "generation of connectomes is complete!"
 	mv assignments.csv ./connectomes/
+	
+	# need to convert csvs to actually csv and not space delimited
+	for csvs in ./connectomes/*.csv
+	do
+		sed -e 's/\s\+/,/g' ${csvs} > ${csvs}
+	done
 else
 	echo "something went wrong"
 fi
