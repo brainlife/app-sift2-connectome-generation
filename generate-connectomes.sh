@@ -62,7 +62,7 @@ fi
 for MEAS in ${measures}
 do
 	if [[ ! ${MEAS} == 'null' ]]; then 
-		if [ ! ${MEAS}.mif ]; then
+		if [ ! -f ${MEAS}.mif ]; then
 			echo "converting ${MEAS}"
 			measure=$(eval "echo \$${MEAS}")
 			mrconvert ${measure} ${MEAS}.mif -force -nthreads ${ncores} -force -quiet
@@ -71,7 +71,7 @@ do
 done
 
 #### perform SIFT2 to identify streamline weights ####
-if [ ! weights.csv ]; then
+if [ ! -f weights.csv ]; then
 	echo "performing SIFT2 to identify streamlines weights"
 	tcksift2 ${track} lmax${lmax}.mif weights.csv -act 5tt.mif -out_mu mu.txt -fd_scale_gm -nthreads ${ncores} -force -quiet
 	mu=`cat mu.txt`

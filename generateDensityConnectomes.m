@@ -15,8 +15,8 @@ topdir = pwd;
 config = loadjson('config.json');
 
 % load count and length connectomes
-count = load(fullfile(topdir,'count.csv'));
-length = load(fullfile(topdir,'length.csv'));
+count = load(fullfile(topdir,'connectomes','count.csv'));
+length = load(fullfile(topdir,'connectomes','length.csv'));
 
 % parse number of streamlines to compute density
 track = fgRead(config.track);
