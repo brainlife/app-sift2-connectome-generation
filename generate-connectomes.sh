@@ -84,20 +84,20 @@ do
 	if [ ! -f ./connectomes/${MEAS}_mean.csv ]; then
 		echo "creating connectome for diffusion measure ${MEAS}"
 		tcksample ${track} ${MEAS}.mif mean_${MEAS}_per_streamline.csv -stat_tck mean -use_tdi_fraction -nthreads ${ncores} -force
-		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -tck_weights_in weights.csv -stat_edge mean -symmetric -nthreads ${ncores} -force
+		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -tck_weights_in weights.csv -stat_edge mean -symmetric -zero_diagonal -nthreads ${ncores} -force
 	fi
 done
 
 # count network
 if [ ! -f ./connectomes/count.csv ]; then
 	echo "creating connectome for streamline count"
-	tck2connectome ${track} parc.mif ./connectomes/count.csv -tck_weights_in weights.csv -out_assignments assignments.csv -symmetric -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/count.csv -tck_weights_in weights.csv -out_assignments assignments.csv -symmetric -zero_diagonal -force -nthreads ${ncores}
 fi
 
 # length network
 if [ ! -f ./connectomes/length.csv ]; then
 	echo "creating connectome for streamline length"
-	tck2connectome ${track} parc.mif ./connectomes/length.csv -tck_weights_in weights.csv -scale_length -stat_edge mean -symmetric -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/length.csv -tck_weights_in weights.csv -scale_length -stat_edge mean -symmetric -zero_diagonal -force -nthreads ${ncores}
 fi
 
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
