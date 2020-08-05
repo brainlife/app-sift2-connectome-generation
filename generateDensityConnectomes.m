@@ -20,7 +20,7 @@ length = load(fullfile(topdir,'connectomes','length.csv'));
 
 % parse number of streamlines to compute density
 track = fgRead(config.track);
-num_streamlines = length(track.fibers);
+num_streamlines = size(track.fibers,1);
 clear track
 
 % compute density
