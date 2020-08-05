@@ -63,20 +63,20 @@ bl dataset download <dataset id for any neuro/dwi data and neuro/anat/t1w and ne
 {
   "parc": "/testdata/parcellation/parc.nii.gz",
   "track":  "/testdata/track/track.tck",
-	"lmax2":	"/tesdata/input_csd/lmax2.nii.gz",
-	"lmax4":	"/tesdata/input_csd/lmax4.nii.gz",
-	"lmax6":	"/tesdata/input_csd/lmax6.nii.gz",
-	"lmax8":	"/tesdata/input_csd/lmax8.nii.gz",
-	"lmax10":	"/tesdata/input_csd/lmax10.nii.gz",
-	"lmax12":	"/tesdata/input_csd/lmax12.nii.gz",
-	"lmax14":	'/testdata/input_csd/lmax14.nii.gz",
-	"ndi":	"/testdata/noddi/ndi.nii.gz",
-	"odi":	"/testdata/noddi/odi.nii.gz",
-	"isovf":	"/testdata/noddi/isovf.nii.gz",
-	"fa":	"/testdata/tensor/fa.nii.gz",
-	"md":	"/testdata/tensor/md.nii.gz",
-	"ad":	"/testdata/tensor/ad.nii.gz",
-	"rd":	"/testdata/tensor/rd.nii.gz"
+  "lmax2":  "/tesdata/input_csd/lmax2.nii.gz",
+  "lmax4":  "/tesdata/input_csd/lmax4.nii.gz",
+  "lmax6":  "/tesdata/input_csd/lmax6.nii.gz",
+  "lmax8":  "/tesdata/input_csd/lmax8.nii.gz",
+  "lmax10":  "/tesdata/input_csd/lmax10.nii.gz",
+  "lmax12":  "/tesdata/input_csd/lmax12.nii.gz",
+  "lmax14":  "/testdata/input_csd/lmax14.nii.gz",
+  "ndi":  "/testdata/noddi/ndi.nii.gz",
+  "odi":  "/testdata/noddi/odi.nii.gz",
+  "isovf":  "/testdata/noddi/isovf.nii.gz",
+  "fa":	"/testdata/tensor/fa.nii.gz",
+  "md":	"/testdata/tensor/md.nii.gz",
+  "ad":	"/testdata/tensor/ad.nii.gz",
+  "rd":	"/testdata/tensor/rd.nii.gz"
 }
 ```
 
