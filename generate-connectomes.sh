@@ -117,6 +117,12 @@ fi
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	echo "generation of connectomes is complete!"
 	mv weights.csv assignments.csv ./connectomes/
+	
+	# need to convert csvs to actually csv and not space delimited
+	for csvs in ./connectomes/*.csv
+	do
+		sed -e 's/\s\+/,/g' ${csvs} > ${csvs}
+	done
 else
 	echo "something went wrong"
 fi
