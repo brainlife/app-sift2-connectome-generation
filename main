@@ -18,5 +18,6 @@ if [ ! -f ./connectomes/density.csv ]; then
 else
 	echo "connectome generation completed"
 	rm -rf *.mif *.txt
+	mv connectomes output
 fi
 
