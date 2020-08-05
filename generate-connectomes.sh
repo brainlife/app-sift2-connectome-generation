@@ -91,7 +91,9 @@ if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	# need to convert csvs to actually csv and not space delimited
 	for csvs in ./connectomes/*.csv
 	do
-		sed -e 's/\s\+/,/g' ${csvs} > ${csvs}
+		sed -e 's/\s\+/,/g' ${csvs} > tmp.csv
+		cat tmp.csv > ${csvs}
+		rm -rf tmp.csv
 	done
 else
 	echo "something went wrong"
