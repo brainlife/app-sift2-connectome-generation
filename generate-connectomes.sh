@@ -85,7 +85,7 @@ fi
 
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	echo "generation of connectomes is complete!"
-	mv weights.csv assignments.csv ./connectomes/
+	mv assignments.csv ./connectomes/
 else
 	echo "something went wrong"
 fi
