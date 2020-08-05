@@ -69,7 +69,7 @@ fi
 # count density
 if [ ! -f ./connectomes/density.csv ]; then
 	echo "creating connectome for streamline count"
-	tck2connectome ${track} parc.mif ./connectomes/count.csv -out_assignments assignments.csv -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/density.csv -out_assignments assignments.csv -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
 fi
 
 # length network
@@ -81,7 +81,7 @@ fi
 # length density network
 if [ ! -f ./connectomes/denlen.csv ]; then
 	echo "creating connectome for streamline length"
-	tck2connectome ${track} parc.mif ./connectomes/length.csv -scale_length -stat_edge mean -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/denlen.csv -scale_length -stat_edge mean -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
 fi
 
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
