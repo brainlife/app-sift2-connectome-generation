@@ -19,6 +19,10 @@ ad=`jq -r '.ad' config.json`
 fa=`jq -r '.fa' config.json`
 md=`jq -r '.md' config.json`
 rd=`jq -r '.rd' config.json`
+ga=`jq -r '.ga' config.json`
+ak=`jq -r '.ak' config.json`
+mk=`jq -r '.mk' config.json`
+rk=`jq -r '.rk' config.json`
 ndi=`jq -r '.ndi' config.json`
 odi=`jq -r '.odi' config.json`
 isovf=`jq -r '.isovf' config.json`
@@ -28,12 +32,16 @@ parc=`jq -r '.parc' config.json`
 ncores=8
 
 #### set up measures variable if diffusion measures included. if not, measures is null and bypasses diffusion measures lines ####
-if [[ ! ${fa} == 'null' ]] && [[ ! ${ndi} == 'null' ]]; then
+if [[ ! ${fa} == 'null' ]] && [[ ! ${ndi} == 'null' ]] && [[ ${ga} == 'null' ]]; then
 	measures="ad fa md rd ndi odi isovf"
 elif [[ ${ndi} == 'null' ]] && [[ ${fa} == 'null' ]]; then
 	measures='null'
 elif [[ ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]]; then
 	measures="ad fa md rd"
+elif [[ ! ${ndi} == 'null' ]] && [[ !${fa} == 'null' ]] && [ ! ${ga} == 'null' ]]; then
+	measures="ad fa md rd ga ak mk rk ndi odi isovf"
+elif [[ ${ndi} == 'null' ]] && [[ ! ${ga} == 'null' ]]; then
+	measures="ad fa md rd ga ak mk rk"
 else
 	measures="ndi odi isovf"
 fi
