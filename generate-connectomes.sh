@@ -29,7 +29,7 @@ elif [[ ${ndi} == 'null' ]] && [[ ${fa} == 'null' ]]; then
 	measures='null'
 elif [[ ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]]; then
 	measures="ad fa md rd"
-elif [[ ! ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]] && [ ! ${ga} == 'null' ]]; then
+elif [[ ! ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]] && [[ ! ${ga} == 'null' ]]; then
 	measures="ad fa md rd ga ak mk rk ndi odi isovf"
 elif [[ ${ndi} == 'null' ]] && [[ ! ${ga} == 'null' ]]; then
 	measures="ad fa md rd ga ak mk rk"
