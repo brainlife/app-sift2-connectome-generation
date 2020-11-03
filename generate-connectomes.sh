@@ -37,7 +37,7 @@ if [[ ! ${fa} == 'null' ]] && [[ ! ${ndi} == 'null' ]] && [[ ${ga} == 'null' ]];
 elif [[ ${ndi} == 'null' ]] && [[ ${fa} == 'null' ]]; then
 	echo "missing measures. please input either a tensor or noddi datatype"
 	exit 1
-elif [[ ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]]; then
+elif [[ ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]] && [[ ${ga} == 'null' ]]; then
 	measures="ad fa md rd"
 elif [[ ! ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]] && [[ ! ${ga} == 'null' ]]; then
 	measures="ad fa md rd ga ak mk rk ndi odi isovf"
