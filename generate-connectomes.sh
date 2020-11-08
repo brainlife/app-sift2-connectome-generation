@@ -32,16 +32,16 @@ parc=`jq -r '.parc' config.json`
 ncores=8
 
 #### set up measures variable if diffusion measures included. if not, measures is null and bypasses diffusion measures lines ####
-if [[ ! ${fa} == 'null' ]] && [[ ! ${ndi} == 'null' ]] && [[ ${ga} == 'null' ]]; then
+if [[ ! ${fa} == 'null' ]] && [[ ! ${ndi} == 'null' ]] && [ ! -f ${ga} ]; then
 	measures="ad fa md rd ndi odi isovf"
 elif [[ ${ndi} == 'null' ]] && [[ ${fa} == 'null' ]]; then
 	echo "missing measures. please input either a tensor or noddi datatype"
 	exit 1
-elif [[ ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]] && [[ ${ga} == 'null' ]]; then
+elif [[ ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]] && [ ! -f ${ga} == 'null' ]; then
 	measures="ad fa md rd"
-elif [[ ! ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]] && [[ ! ${ga} == 'null' ]]; then
+elif [[ ! ${ndi} == 'null' ]] && [[ ! ${fa} == 'null' ]] && [ -f ${ga} ]; then
 	measures="ad fa md rd ga ak mk rk ndi odi isovf"
-elif [[ ${ndi} == 'null' ]] && [[ ! ${ga} == 'null' ]]; then
+elif [[ ${ndi} == 'null' ]] && [ -f ${ga} == 'null' ]; then
 	measures="ad fa md rd ga ak mk rk"
 else
 	measures="ndi odi isovf"
