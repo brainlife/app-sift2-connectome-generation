@@ -93,6 +93,12 @@ if [ ! -f ./connectomes/denlen.csv ]; then
 	tck2connectome ${track} parc.mif ./connectomes/denlen.csv -scale_length -stat_edge mean -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
 fi
 
+# generate centers csv
+if [ ! -f ./connectomes/centers.csv ]; then
+	echo "creating csv for centers of nodes"
+	labelstats parc.mif -output centre | sed 's/^[[:space:]]*//' | tr -s '[:blank:]' ',' > ./connectomes/centers.csv
+fi
+
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	echo "generation of connectomes is complete!"
 	mv assignments.csv ./connectomes/
@@ -100,9 +106,11 @@ if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	# need to convert csvs to actually csv and not space delimited
 	for csvs in ./connectomes/*.csv
 	do
-		sed -e 's/\s\+/,/g' ${csvs} > tmp.csv
-		cat tmp.csv > ${csvs}
-		rm -rf tmp.csv
+		if [[ ! ${csvs} == './connectomes/centers.csv' ]]; then
+			sed -e 's/\s\+/,/g' ${csvs} > tmp.csv
+			cat tmp.csv > ${csvs}
+			rm -rf tmp.csv
+		fi
 	done
 else
 	echo "something went wrong"
