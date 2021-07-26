@@ -28,7 +28,7 @@ if [ -f ${fa} ] && [ -f ${ndi} ] && [ ! -f ${ga} ]; then
 elif [ ! -f ${ndi} ] && [ ! -f ${fa} ]; then
 	echo "missing measures. please input either a tensor or noddi datatype"
 	exit 1
-elif [ ! -f ${ndi} ] && [ -f ${fa} ] && [ ! -f ${ga} == 'null' ]; then
+elif [ ! -f ${ndi} ] && [ -f ${fa} ] && [ ! -f ${ga} ]; then
 	measures="ad fa md rd"
 elif [ -f ${ndi} ] && [ -f ${fa} ] && [ -f ${ga} ]; then
 	measures="ad fa md rd ga ak mk rk ndi odi isovf"
