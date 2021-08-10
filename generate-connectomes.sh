@@ -27,8 +27,8 @@ ncores=8
 if [ -f ${fa} ] && [ -f ${ndi} ] && [ ! -f ${ga} ]; then
 	measures="ad fa md rd ndi odi isovf"
 elif [ ! -f ${ndi} ] && [ ! -f ${fa} ]; then
-	echo "missing measures. please input either a tensor or noddi datatype"
-	exit 1
+	echo "missing measures. skipping diffusion model matrix generation"
+	measures=""
 elif [ ! -f ${ndi} ] && [ -f ${fa} ] && [ ! -f ${ga} ]; then
 	measures="ad fa md rd"
 elif [ -f ${ndi} ] && [ -f ${fa} ] && [ -f ${ga} ]; then
@@ -55,16 +55,18 @@ if [ ! -f parc.mif ]; then
 fi
 
 # diffusion measures (if inputted)
-for MEAS in ${measures}
-do
-	if [[ ! ${MEAS} == 'null' ]]; then 
-		if [ ! -f ${MEAS}.mif ]; then
-			echo "converting ${MEAS}"
-			measure=$(eval "echo \$${MEAS}")
-			mrconvert ${measure} ${MEAS}.mif -force -nthreads ${ncores} -force -quiet
+if [ ! -z ${measures} ]; then
+	for MEAS in ${measures}
+	do
+		if [[ ! ${MEAS} == 'null' ]]; then 
+			if [ ! -f ${MEAS}.mif ]; then
+				echo "converting ${MEAS}"
+				measure=$(eval "echo \$${MEAS}")
+				mrconvert ${measure} ${MEAS}.mif -force -nthreads ${ncores} -force -quiet
+			fi
 		fi
-	fi
-done
+	done
+fi
 
 #### generate connectomes ####
 # microstructure networks (if inputted)
