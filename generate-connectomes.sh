@@ -3,7 +3,7 @@
 set -x
 set -e
 
-mkdir -p connectomes
+mkdir -p connectomes 
 
 #### configurable parameters ####
 ad=`jq -r '.ad' config.json`
@@ -19,6 +19,7 @@ odi=`jq -r '.odi' config.json`
 isovf=`jq -r '.isovf' config.json`
 track=`jq -r '.track' config.json`
 parc=`jq -r '.parc' config.json`
+label=`jq -r '.label' config.json`
 #inflate=`jq -r '.lmax2' config.json`
 ncores=8
 
@@ -37,6 +38,14 @@ elif [ ! -f ${ndi} ] && [ -f ${ga} ]; then
 else
 	measures="ndi odi isovf"
 fi
+
+#### conmat measures ####
+conmat_measures="count density length denlen"
+
+for i in ${conmat_measures}
+do
+	mkdir -p ${i}_out ${i}_out/csv
+done
 
 #### convert data to mif ####
 # parcellation
@@ -73,24 +82,36 @@ done
 if [ ! -f ./connectomes/count.csv ]; then
 	echo "creating connectome for streamline count"
 	tck2connectome ${track} parc.mif ./connectomes/count.csv -out_assignments assignments.csv -symmetric -zero_diagonal -force -nthreads ${ncores}
+	cp ./connectomes/count.csv ./count_out/csv/correlation.csv
+	cp ${label} ./count_out/
+	cp ./templates/index.json ./count_out/
 fi
 
 # count density
 if [ ! -f ./connectomes/density.csv ]; then
 	echo "creating connectome for streamline count"
 	tck2connectome ${track} parc.mif ./connectomes/density.csv -out_assignments assignments.csv -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
+	cp ./connectomes/density.csv ./density_out/csv/correlation.csv
+	cp ${label} ./density_out/
+	cp ./templates/index.json ./density_out/
 fi
 
 # length network
 if [ ! -f ./connectomes/length.csv ]; then
 	echo "creating connectome for streamline length"
 	tck2connectome ${track} parc.mif ./connectomes/length.csv -scale_length -stat_edge mean -symmetric -zero_diagonal -force -nthreads ${ncores}
+	cp ./connectomes/length.csv ./length_out/csv/correlation.csv
+	cp ${label} ./length_out/
+	cp ./templates/index.json ./length_out/
 fi
 
 # length density network
 if [ ! -f ./connectomes/denlen.csv ]; then
 	echo "creating connectome for streamline length"
 	tck2connectome ${track} parc.mif ./connectomes/denlen.csv -scale_length -stat_edge mean -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
+	cp ./connectomes/length.csv ./denlen_out/csv/correlation.csv
+	cp ${label} ./denlen_out/
+	cp ./templates/index.json ./denlen_out/
 fi
 
 # generate centers csv
@@ -111,6 +132,12 @@ if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 			cat tmp.csv > ${csvs}
 			rm -rf tmp.csv
 		fi
+	done
+	for conmats in ${conmat_measures}
+	do
+		sed -e 's/\s\+/,/g' ./${conmats}_out/csv/correlation.csv > ./${conmats}_out/csv/tmp.csv
+		cat ./${conmats}_out/csv/tmp.csv > ./${conmats}_out/csv/correlation.csv
+		rm -rf ./${conmats}_out/csv/tmp.csv
 	done
 else
 	echo "something went wrong"
