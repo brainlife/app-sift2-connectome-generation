@@ -25,4 +25,5 @@ else
 	rm -rf *.mif *.txt
 	mkdir -p output
 	mv connectomes output/output/
+	cp netneuro/surfaces/index.json ./netneuro/labels.json
 fi
