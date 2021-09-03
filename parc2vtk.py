@@ -41,8 +41,14 @@ for label in labels:
     if not label_id in unique:
         continue
 
-    surf_name=label['label']+'.'+label['name']+'.vtk'
+    surf_name=label['voxel_value']+'.'+label['name']+'.vtk'
     label["filename"] = surf_name
+    label["color"] = {}
+    label["color"]["r"] = np.random.randint(255)
+    label["color"]["g"] = np.random.randint(255)
+    label["color"]["b"] = np.random.randint(255)
+    label['name'] = label['name']
+    label['label'] = label['voxel_value']
     print(surf_name)
 
     index.append(label)
