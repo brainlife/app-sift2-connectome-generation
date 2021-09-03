@@ -132,7 +132,7 @@ def generate_networkneuro():
 	for i in range(1,len(ofib)+1):
 		tname = 'conn_'+str(i)+'.json'
 		with open(outdir+'/'+tname,'w') as out_f:
-			json.dumps(ofib[i-1],out_f)
+			json.dump(ofib[i-1],out_f)
 
 	# total index
 	with open(outdir+'/index.json','w') as out_f:
