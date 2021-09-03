@@ -130,6 +130,11 @@ if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	for csvs in ./connectomes/*.csv
 	do
 		if [[ ! ${csvs} == './connectomes/centers.csv' ]]; then
+			if [[ ${csvs} == './connectomes/assignments.csv' ]]; then
+				sed 1,1d ${csvs} > tmp.csv
+				cat tmp.csv > ${csvs}
+				rm -rf tmp.csv
+			fi
 			sed -e 's/\s\+/,/g' ${csvs} > tmp.csv
 			cat tmp.csv > ${csvs}
 			rm -rf tmp.csv
