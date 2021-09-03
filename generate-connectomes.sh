@@ -77,7 +77,7 @@ if [ ! -f parc.mif ]; then
 fi
 
 # diffusion measures (if inputted)
-if [ ! -z ${measures} ]; then
+if [[ ! -z ${measures} ]]; then
 	for MEAS in ${measures}
 	do
 		if [[ ! ${MEAS} == 'null' ]]; then 
