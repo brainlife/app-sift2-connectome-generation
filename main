@@ -6,7 +6,7 @@
 set -e
 
 # generate connectomes
-time singularity exec -e docker://brainlife/mrtrix3:3.0.2 ./generate-connectomes.sh
+time singularity exec -e docker://brainlife/mrtrix3:3.0.3 ./generate-connectomes.sh
 
 # generate networkneuro datatype
 [ ! -d netneuro ] && mkdir -p netneuro netneuro/output netneuro/surfaces netneuro/roipairs && cp -v ./connectomes/* ./netneuro/output/
