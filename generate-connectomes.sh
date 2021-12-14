@@ -111,7 +111,7 @@ fi
 if [ ! -f ./connectomes/denlen.csv ]; then
 	echo "creating connectome for streamline length"
 	tck2connectome ${track} parc.mif ./connectomes/denlen.csv -scale_length -stat_edge mean -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
-	cp ./connectomes/length.csv ./denlen_out/csv/correlation.csv
+	cp ./connectomes/denlen.csv ./denlen_out/csv/correlation.csv
 	cp ${label} ./denlen_out/
 	cp ./templates/index.json ./denlen_out/
 fi
