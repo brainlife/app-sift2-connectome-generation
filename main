@@ -5,7 +5,15 @@
 
 set -e
 
-time singularity exec -e docker://brainlife/mrtrix3:3.0_RC3 ./generate-connectomes.sh
+# generate connectomes
+time singularity exec -e docker://brainlife/mrtrix3:3.0.2 ./generate-connectomes.sh
 
-time singularity exec -e docker://brainlife/freesurfer-stats:1.2 ./generate-final-connectomes.py
+if [ ! -f ./connectomes/density.csv ]; then
+	echo "something failed. check derivatives"
+else
+	echo "connectome generation completed"
+	rm -rf *.mif *.txt
+	mkdir -p output
+	mv connectomes output/output/
+fi
 
