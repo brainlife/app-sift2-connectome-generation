@@ -3,18 +3,9 @@
 set -x
 set -e
 
-mkdir -p connectomes
+mkdir -p connectomes 
 
 #### configurable parameters ####
-lmax2=`jq -r '.lmax2' config.json`
-lmax4=`jq -r '.lmax4' config.json`
-lmax6=`jq -r '.lmax6' config.json`
-lmax8=`jq -r '.lmax8' config.json`
-lmax10=`jq -r '.lmax10' config.json`
-lmax12=`jq -r '.lmax12' config.json`
-lmax14=`jq -r '.lmax14' config.json`
-lmax=`jq -r '.lmax' config.json`
-mask=`jq -r '.mask' config.json`
 ad=`jq -r '.ad' config.json`
 fa=`jq -r '.fa' config.json`
 md=`jq -r '.md' config.json`
@@ -64,12 +55,13 @@ if [ ! -f lmax${lmax}.mif ]; then
 	mrconvert ${fod} lmax${lmax}.mif -force -nthreads ${ncores} -quiet
 fi
 
-# 5tt
-if [ ! -f 5tt.mif ]; then
-	echo "converting 5tt"
-	mrconvert ${mask} 5tt.mif -force -nthreads ${ncores} -quiet
-fi
 
+for i in ${conmat_measures}
+do
+	mkdir -p ${i}_out ${i}_out/csv
+done
+
+#### convert data to mif ####
 # parcellation
 if [ ! -f parc.mif ]; then
 	echo "converting parcellation"
@@ -122,6 +114,7 @@ fi
 if [ ! -f ./connectomes/density.csv ]; then
 	echo "creating connectome for streamline count"
 	tck2connectome ${track} parc.mif ./connectomes/density.csv -scale_invnodevol -tck_weights_in weights.csv -out_assignments assignments.csv -symmetric -zero_diagonal -force -nthreads ${ncores}
+
 	cp ./connectomes/density.csv ./density_out/csv/correlation.csv
 	cp ${label} ./density_out/
 	cp ./templates/index.json ./density_out/
@@ -154,6 +147,7 @@ fi
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	echo "generation of connectomes is complete!"
 	mv weights.csv assignments.csv ./connectomes/
+
 	
 	# need to convert csvs to actually csv and not space delimited
 	for csvs in ./connectomes/*.csv

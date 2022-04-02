@@ -18,6 +18,7 @@ time singularity exec -e docker://brainlife/mrtrix3:3.0.3 ./generate-connectomes
 # generate network datatypes
 #SINGULARITYENV_PYTHONNOUSERSITE=true singularity exec -e docker://filsilva/cxnetwork:0.2.0 ./conmat2network.py
 
+
 if [ ! -f ./connectomes/density.csv ]; then
 	echo "something failed. check derivatives"
 else
