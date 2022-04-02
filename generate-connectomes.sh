@@ -130,7 +130,7 @@ fi
 # length network
 if [ ! -f ./connectomes/length.csv ]; then
 	echo "creating connectome for streamline length"
-	tck2connectome ${track} parc.mif ./connectomes/length.csv -tck_weights_in weights.csv -scale_length -stat_edge mean -symmetric -zero_diagonal -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/length.csv -tck_weights_in weights.csv -scale_invlength -stat_edge mean -symmetric -zero_diagonal -force -nthreads ${ncores}
 	cp ./connectomes/length.csv ./length_out/csv/correlation.csv
 	cp ${label} ./length_out/
 	cp ./templates/index.json ./length_out/
@@ -139,7 +139,7 @@ fi
 # density of length network
 if [ ! -f ./connectomes/denlen.csv ]; then
 	echo "creating connectome for streamline count"
-	tck2connectome ${track} parc.mif ./connectomes/denlen.csv -tck_weights_in weights.csv -scale_length -scale_invnodevol -out_assignments assignments.csv -symmetric -zero_diagonal -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/denlen.csv -tck_weights_in weights.csv -scale_invlength -scale_invnodevol -out_assignments assignments.csv -symmetric -zero_diagonal -force -nthreads ${ncores}
 	cp ./connectomes/denlen.csv ./denlen_out/csv/correlation.csv
 	cp ${label} ./denlen_out/
 	cp ./templates/index.json ./denlen_out/
