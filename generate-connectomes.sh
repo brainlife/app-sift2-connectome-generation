@@ -3,7 +3,7 @@
 set -x
 set -e
 
-mkdir -p connectomes
+mkdir -p connectomes 
 
 #### configurable parameters ####
 ad=`jq -r '.ad' config.json`
