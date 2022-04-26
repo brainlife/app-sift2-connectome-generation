@@ -65,7 +65,8 @@ You can submit this App online at [https://doi.org/10.25663/brainlife.app.395](h
     "rk": "/input/tensor/rk.nii.gz",
     "ndi": "/input/noddi/ndi.nii.gz",
     "isovf": "/input/noddi/isovf.nii.gz",
-    "odi": "/input/noddi/odi.nii.gz"
+    "odi": "/input/noddi/odi.nii.gz",
+    "lmax": 8
 }
 ```
 

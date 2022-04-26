@@ -1,12 +1,23 @@
 #!/bin/bash
-#PBS -l nodes=1:ppn=8,walltime=1:30:00,vmem=40gb
+
+#PBS -l nodes=1:ppn=8,walltime=6:30:00,vmem=40gb
 #PBS -N app-sift2-connectome-generation
 #PBS -V
 
 set -e
 
 # generate connectomes
-time singularity exec -e docker://brainlife/mrtrix3:3.0.2 ./generate-connectomes.sh
+time singularity exec -e docker://brainlife/mrtrix3:3.0.3 ./generate-connectomes.sh
+
+# generate networkneuro datatype
+[ ! -d netneuro ] && mkdir -p netneuro netneuro/output netneuro/surfaces netneuro/roipairs && cp -v ./connectomes/* ./netneuro/output/
+[ ! -f netneuro/roipairs/index.json ] && time singularity exec -e docker://brainlife/dipy:1.4.0 ./generate_networkneuro.py
+
+# generate vtks of parc
+[ ! -f netneuro/surfaces/index.json ] && time singularity exec -e docker://brainlife/pythonvtk:1.1 ./parc2vtk.py
+
+# generate network datatypes
+#SINGULARITYENV_PYTHONNOUSERSITE=true singularity exec -e docker://filsilva/cxnetwork:0.2.0 ./conmat2network.py
 
 # generate networkneuro datatype
 [ ! -d netneuro ] && mkdir -p netneuro netneuro/output netneuro/surfaces netneuro/roipairs && cp -v ./connectomes/* ./netneuro/output/
@@ -27,4 +38,3 @@ else
 	mv connectomes output/output/
 	cp ./netneuro/surfaces/index.json ./netneuro/labels.json
 fi
-

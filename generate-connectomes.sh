@@ -48,6 +48,19 @@ do
 done
 
 #### convert data to mif ####
+# fod
+if [ ! -f lmax${lmax}.mif ]; then
+	echo "converting fod"
+	fod=$(eval "echo \$lmax${lmax}")
+	mrconvert ${fod} lmax${lmax}.mif -force -nthreads ${ncores} -quiet
+fi
+
+for i in ${conmat_measures}
+do
+	mkdir -p ${i}_out ${i}_out/csv
+done
+
+#### convert data to mif ####
 # parcellation
 if [ ! -f parc.mif ]; then
 	echo "converting parcellation"
@@ -76,7 +89,7 @@ do
 		echo "creating connectome for diffusion measure ${MEAS}"
 		tcksample ${track} ${MEAS}.mif mean_${MEAS}_per_streamline.csv -stat_tck mean -use_tdi_fraction -nthreads ${ncores} -force
 		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -stat_edge mean -symmetric -zero_diagonal -nthreads ${ncores} -force
-		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_density.csv -scale_file mean_${MEAS}_per_streamline.csv -stat_edge mean -scale_invnodevol -symmetric -zero_diagonal -nthreads ${ncores} -force
+		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_density.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -stat_edge mean -symmetric -zero_diagonal -nthreads ${ncores} -force
 	fi
 done
 
@@ -84,15 +97,17 @@ done
 if [ ! -f ./connectomes/count.csv ]; then
 	echo "creating connectome for streamline count"
 	tck2connectome ${track} parc.mif ./connectomes/count.csv -out_assignments assignments.csv -symmetric -zero_diagonal -force -nthreads ${ncores}
+
 	cp ./connectomes/count.csv ./count_out/csv/correlation.csv
 	cp ${label} ./count_out/
 	cp ./templates/index.json ./count_out/
 fi
 
-# count density
+# count density network
 if [ ! -f ./connectomes/density.csv ]; then
 	echo "creating connectome for streamline count"
-	tck2connectome ${track} parc.mif ./connectomes/density.csv -out_assignments assignments.csv -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/density.csv -scale_invnodevol -out_assignments assignments.csv -symmetric -zero_diagonal -force -nthreads ${ncores}
+
 	cp ./connectomes/density.csv ./density_out/csv/correlation.csv
 	cp ${label} ./density_out/
 	cp ./templates/index.json ./density_out/
@@ -102,15 +117,17 @@ fi
 if [ ! -f ./connectomes/length.csv ]; then
 	echo "creating connectome for streamline length"
 	tck2connectome ${track} parc.mif ./connectomes/length.csv -scale_invlength -stat_edge mean -symmetric -zero_diagonal -force -nthreads ${ncores}
+
 	cp ./connectomes/length.csv ./length_out/csv/correlation.csv
 	cp ${label} ./length_out/
 	cp ./templates/index.json ./length_out/
 fi
 
-# length density network
+# density of length network
 if [ ! -f ./connectomes/denlen.csv ]; then
 	echo "creating connectome for streamline length"
 	tck2connectome ${track} parc.mif ./connectomes/denlen.csv -scale_invlength -stat_edge mean -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
+
 	cp ./connectomes/denlen.csv ./denlen_out/csv/correlation.csv
 	cp ${label} ./denlen_out/
 	cp ./templates/index.json ./denlen_out/
@@ -124,7 +141,7 @@ fi
 
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	echo "generation of connectomes is complete!"
-	mv assignments.csv ./connectomes/
+	mv weights.csv assignments.csv ./connectomes/
 	
 	# need to convert csvs to actually csv and not space delimited
 	for csvs in ./connectomes/*.csv
