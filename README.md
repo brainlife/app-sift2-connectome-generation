@@ -38,7 +38,6 @@ We kindly ask that you cite the following articles when publishing papers and co
 5. Smith, R. E.; Tournier, J.-D.; Calamante, F. & Connelly, A. SIFT2: Enabling dense quantitative assessment of brain white matter connectivity using streamlines tractography. NeuroImage, 2015, 119, 338-351
 
 6. Smith, RE; Raffelt, D; Tournier, J-D; Connelly, A. Quantitative Streamlines Tractography: Methods and Inter-Subject Normalisation. Open Science Framework, https://doi.org/10.31219/osf.io/c67kn.
-
 #### MIT Copyright (c) 2020 brainlife.io The University of Texas at Austin and Indiana University
 
 ## Running the App
