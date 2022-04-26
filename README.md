@@ -1,9 +1,9 @@
 [![Abcdspec-compliant](https://img.shields.io/badge/ABCD_Spec-v1.1-green.svg)](https://github.com/brain-life/abcd-spec)
-[![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-brainlife.app.395-blue.svg)](https://doi.org/10.25663/brainlife.app.395)
+[![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-brainlife.app.580-blue.svg)](https://doi.org/10.25663/brainlife.app.580)
 
-# Structural Connectome MRTrix3 (SCMRT)
+# Structural Connectome MRTrix3 (SCMRT) (SIFT2)
 
-This app will "This app will generate a structural connectome from tractography and parcellation data. This app takes in as input a wholebrain tractogram, and volumated parcellation, and tensor and noddi datatypes as optional datatypes to generate metric-based connectivity matrices. This app will output many datatypes that are common to the network pipelines available on brainlife.io"
+This app will "This app will generate a structural connectome from tractography and parcellation data using SIFT2 to clean the tractograms. This app takes in as input a wholebrain tractogram, and volumated parcellation, a csd dataytpe to perform SIFT2, a tissue type mask (5tt), and tensor and noddi datatypes as optional datatypes to generate metric-based connectivity matrices. This app will output many datatypes that are common to the network pipelines available on brainlife.io"
 
 ### Authors
 
@@ -35,13 +35,16 @@ We kindly ask that you cite the following articles when publishing papers and co
 
 4. Smith, R. E.; Tournier, J.-D.; Calamante, F. & Connelly, A. The effects of SIFT on the reproducibility and biological accuracy of the structural connectome. NeuroImage, 2015, 104, 253-265
 
+5. Smith, R. E.; Tournier, J.-D.; Calamante, F. & Connelly, A. SIFT2: Enabling dense quantitative assessment of brain white matter connectivity using streamlines tractography. NeuroImage, 2015, 119, 338-351
+
+6. Smith, RE; Raffelt, D; Tournier, J-D; Connelly, A. Quantitative Streamlines Tractography: Methods and Inter-Subject Normalisation. Open Science Framework, https://doi.org/10.31219/osf.io/c67kn.
 #### MIT Copyright (c) 2020 brainlife.io The University of Texas at Austin and Indiana University
 
 ## Running the App
 
 ### On Brainlife.io
 
-You can submit this App online at [https://doi.org/10.25663/brainlife.app.395](https://doi.org/10.25663/brainlife.app.395) via the 'Execute' tab.
+You can submit this App online at [https://doi.org/10.25663/brainlife.app.580](https://doi.org/10.25663/brainlife.app.580) via the 'Execute' tab.
 
 ### Running Locally (on your machine)
 
@@ -55,6 +58,14 @@ You can submit this App online at [https://doi.org/10.25663/brainlife.app.395](h
     "parc": "/input/parc/parc.nii.gz",
     "key": "/input/parc/key.txt",
     "label": "/input/parc/label.json",
+    "lmax2": "/input/csd/lmax2.nii.gz",
+    "lmax4": "/input/csd/lmax4.nii.gz",
+    "lmax6": "/input/csd/lmax6.nii.gz",
+    "lmax8": "/input/csd/lmax8.nii.gz",
+    "lmax10": "/input/csd/lmax10.nii.gz",
+    "lmax12": "/input/csd/lmax12.nii.gz",
+    "lmax14": "/input/csd/lmax14.nii.gz",
+    "mask": "/input/mask/mask.nii.gz",
     "fa": "/input/tensor/fa.nii.gz",
     "md": "/input/tensor/md.nii.gz",
     "rd": "/input/tensor/rd.nii.gz",
@@ -65,13 +76,14 @@ You can submit this App online at [https://doi.org/10.25663/brainlife.app.395](h
     "rk": "/input/tensor/rk.nii.gz",
     "ndi": "/input/noddi/ndi.nii.gz",
     "isovf": "/input/noddi/isovf.nii.gz",
-    "odi": "/input/noddi/odi.nii.gz"
+    "odi": "/input/noddi/odi.nii.gz",
+    "lmax": 8
 }
 ```
 
 ### Sample Datasets
 
-You can download sample datasets from Brainlife using [Brainlife CLI](https://github.com/brain-life/cli).
+You can download sample datasets from Brainlife using [Brainlife CLI](https://github.com/brain-life/cli). 
 
 ```
 npm install -g brainlife
