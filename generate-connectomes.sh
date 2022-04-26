@@ -3,7 +3,7 @@
 set -x
 set -e
 
-mkdir -p connectomes 
+mkdir -p connectomes
 
 #### configurable parameters ####
 ad=`jq -r '.ad' config.json`
@@ -20,8 +20,29 @@ isovf=`jq -r '.isovf' config.json`
 track=`jq -r '.track' config.json`
 parc=`jq -r '.parc' config.json`
 label=`jq -r '.label' config.json`
-#inflate=`jq -r '.lmax2' config.json`
+weights=`jq -r '.weights' config.json`
+labels=`jq -r '.labels' config.json`
 ncores=8
+
+#### copy and subsample tractogram if labels available, else use weights
+if [[ ! ${labels} == null ]] && [[ ${weights} == null ]]; then
+	cp ${labels} ./labels.csv
+	weights=./labels.csv
+elif [[ ${labels} == null ]] && [[ ! ${weights} == null ]]; then
+	cp ${weights} ./weights.csv
+	weights=./weights.csv
+elif [[ ${labels} == null ]] && [[ ${weights} == null ]]; then
+	tckinfo ${track} -count > ./tmp.txt
+	num_tracks=`cat test.txt | sed 's/actual count in file: //' | grep -oi "[0-9].*" | tail -1`
+	for (( i=0; i<${num_tracks}; i++ ))
+	do
+		echo "1" >> ./weights/weights.csv
+	done
+	weights=./weights.csv
+else
+	cp ${weights} ./weights.csv
+	weights=./weights.csv
+fi
 
 #### set up measures variable if diffusion measures included. if not, measures is null and bypasses diffusion measures lines ####
 if [ -f ${fa} ] && [ -f ${ndi} ] && [ ! -f ${ga} ]; then
@@ -71,7 +92,7 @@ fi
 if [[ ! -z ${measures} ]]; then
 	for MEAS in ${measures}
 	do
-		if [[ ! ${MEAS} == 'null' ]]; then 
+		if [[ ! ${MEAS} == 'null' ]]; then
 			if [ ! -f ${MEAS}.mif ]; then
 				echo "converting ${MEAS}"
 				measure=$(eval "echo \$${MEAS}")
@@ -88,15 +109,15 @@ do
 	if [ ! -f ./connectomes/${MEAS}_mean.csv ]; then
 		echo "creating connectome for diffusion measure ${MEAS}"
 		tcksample ${track} ${MEAS}.mif mean_${MEAS}_per_streamline.csv -stat_tck mean -use_tdi_fraction -nthreads ${ncores} -force
-		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -stat_edge mean -symmetric -zero_diagonal -nthreads ${ncores} -force
-		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_density.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -stat_edge mean -symmetric -zero_diagonal -nthreads ${ncores} -force
+		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -stat_edge mean -tck_weights_in ${weights} -symmetric -zero_diagonal -nthreads ${ncores} -force
+		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_density.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -stat_edge mean -tck_weights_in ${weights} -symmetric -zero_diagonal -nthreads ${ncores} -force
 	fi
 done
 
 # count network
 if [ ! -f ./connectomes/count.csv ]; then
 	echo "creating connectome for streamline count"
-	tck2connectome ${track} parc.mif ./connectomes/count.csv -out_assignments assignments.csv -symmetric -zero_diagonal -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/count.csv -out_assignments assignments.csv -tck_weights_in ${weights} -symmetric -zero_diagonal -force -nthreads ${ncores}
 
 	cp ./connectomes/count.csv ./count_out/csv/correlation.csv
 	cp ${label} ./count_out/
@@ -106,7 +127,7 @@ fi
 # count density network
 if [ ! -f ./connectomes/density.csv ]; then
 	echo "creating connectome for streamline count"
-	tck2connectome ${track} parc.mif ./connectomes/density.csv -scale_invnodevol -out_assignments assignments.csv -symmetric -zero_diagonal -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/density.csv -scale_invnodevol -out_assignments assignments.csv -tck_weights_in ${weights} -symmetric -zero_diagonal -force -nthreads ${ncores}
 
 	cp ./connectomes/density.csv ./density_out/csv/correlation.csv
 	cp ${label} ./density_out/
@@ -116,7 +137,7 @@ fi
 # length network
 if [ ! -f ./connectomes/length.csv ]; then
 	echo "creating connectome for streamline length"
-	tck2connectome ${track} parc.mif ./connectomes/length.csv -scale_invlength -stat_edge mean -symmetric -zero_diagonal -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/length.csv -scale_invlength -stat_edge mean -tck_weights_in ${weights} -symmetric -zero_diagonal -force -nthreads ${ncores}
 
 	cp ./connectomes/length.csv ./length_out/csv/correlation.csv
 	cp ${label} ./length_out/
@@ -126,7 +147,7 @@ fi
 # density of length network
 if [ ! -f ./connectomes/denlen.csv ]; then
 	echo "creating connectome for streamline length"
-	tck2connectome ${track} parc.mif ./connectomes/denlen.csv -scale_invlength -stat_edge mean -scale_invnodevol -symmetric -zero_diagonal -force -nthreads ${ncores}
+	tck2connectome ${track} parc.mif ./connectomes/denlen.csv -scale_invlength -stat_edge mean -scale_invnodevol -tck_weights_in ${weights} -symmetric -zero_diagonal -force -nthreads ${ncores}
 
 	cp ./connectomes/denlen.csv ./denlen_out/csv/correlation.csv
 	cp ${label} ./denlen_out/
@@ -142,7 +163,7 @@ fi
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	echo "generation of connectomes is complete!"
 	mv weights.csv assignments.csv ./connectomes/
-	
+
 	# need to convert csvs to actually csv and not space delimited
 	for csvs in ./connectomes/*.csv
 	do
