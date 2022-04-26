@@ -3,7 +3,7 @@
 
 # Structural Connectome MRTrix3 (SCMRT) (SIFT2)
 
-This app will "This app will generate a structural connectome from tractography and parcellation data using SIFT2 to clean the tractograms. This app takes in as input a wholebrain tractogram, and volumated parcellation, a csd dataytpe to perform SIFT2, a tissue type mask (5tt), and tensor and noddi datatypes as optional datatypes to generate metric-based connectivity matrices. This app will output many datatypes that are common to the network pipelines available on brainlife.io"
+This app will generate a structural connectome from tractography and parcellation data using SIFT2 to clean the tractograms. This app takes in as input a wholebrain tractogram, and volumated parcellation, a csd dataytpe to perform SIFT2, a tissue type mask (5tt), and tensor and noddi datatypes as optional datatypes to generate metric-based connectivity matrices. This app will output many datatypes that are common to the network pipelines available on brainlife.io
 
 ### Authors
 
@@ -38,6 +38,7 @@ We kindly ask that you cite the following articles when publishing papers and co
 5. Smith, R. E.; Tournier, J.-D.; Calamante, F. & Connelly, A. SIFT2: Enabling dense quantitative assessment of brain white matter connectivity using streamlines tractography. NeuroImage, 2015, 119, 338-351
 
 6. Smith, RE; Raffelt, D; Tournier, J-D; Connelly, A. Quantitative Streamlines Tractography: Methods and Inter-Subject Normalisation. Open Science Framework, https://doi.org/10.31219/osf.io/c67kn.
+
 #### MIT Copyright (c) 2020 brainlife.io The University of Texas at Austin and Indiana University
 
 ## Running the App
