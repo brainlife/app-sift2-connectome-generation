@@ -59,7 +59,7 @@ else # this condition is where both labels and weights are inputted. need to sub
 	tmp_weights=(`cat ${weights}`)
 
 	# for each streamline, identify ones where labels == 1. echo the weight for that streamline to ./weights.csv
-	for (( i=0; i<num_fibers; i++ ))
+	for (( i=0; i<${#tmp_labels[*]}; i++ ))
 	do
 		if [[ ${tmp_labels[${i}]} -eq 1 ]]; then
 			echo ${weights[${i}]} >> ./weights.csv
