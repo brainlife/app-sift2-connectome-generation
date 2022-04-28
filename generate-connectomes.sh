@@ -156,7 +156,7 @@ fi
 
 # count density network
 if [ ! -f ./connectomes/density.csv ]; then
-	echo "creating connectome for streamline count"
+	echo "creating connectome for streamline density"
 	tck2connectome ${track} parc.mif ./connectomes/density.csv -scale_invnodevol -out_assignments assignments.csv ${weights} ${cmd} -symmetric -zero_diagonal -force -nthreads ${ncores}
 
 	cp ./connectomes/density.csv ./density_out/csv/correlation.csv
@@ -192,7 +192,7 @@ fi
 
 if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 	echo "generation of connectomes is complete!"
-	mv weights.csv assignments.csv ./connectomes/
+	mv assignments.csv ./connectomes/
 
 	# need to convert csvs to actually csv and not space delimited
 	for csvs in ./connectomes/*.csv
