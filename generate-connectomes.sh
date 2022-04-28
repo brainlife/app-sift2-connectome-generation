@@ -55,16 +55,16 @@ else # this condition is where both labels and weights are inputted. need to sub
 	track=./track.tck
 
 	# grab labels and weights data
-	tmp_labels=(`cat ${labels}`)
-	tmp_weights=(`cat ${weights}`)
+	# tmp_labels=(`cat ${labels}`)
+	# tmp_weights=(`cat ${weights}`)
 
 	# for each streamline, identify ones where labels == 1. echo the weight for that streamline to ./weights.csv
-	for (( i=0; i<${#tmp_labels[*]}; i++ ))
-	do
-		if [[ ${tmp_labels[${i}]} -eq 1 ]]; then
-			echo ${weights[${i}]} >> ./weights.csv
-		fi
-	done
+	# for (( i=0; i<${#tmp_labels[*]}; i++ ))
+	# do
+	# 	if [[ ${tmp_labels[${i}]} -eq 1 ]]; then
+	# 		echo ${tmp_weights[${i}]} >> ./weights.csv
+	# 	fi
+	# done
 
 	# set weights to the new csv file generated
 	weights="-tck_weights_in ./weights.csv"
