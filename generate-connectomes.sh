@@ -3,7 +3,7 @@
 set -x
 set -e
 
-mkdir -p connectomes 
+mkdir -p connectomes
 
 #### configurable parameters ####
 ad=`jq -r '.ad' config.json`
@@ -28,6 +28,10 @@ ncores=8
 if [[ ! ${labels} == null ]] && [[ ${weights} == null ]]; then
 	cp ${labels} ./labels.csv
 	weights=./labels.csv
+
+	# subsample tractogram based on labels datatype. assumes labels.csv is purely just binary assignment of streamlines (one value per row, len(streamlines) rows)
+	connectome2tck ${track} ${weights} ./filtered_ -nodes 1 -exclusive -keep_self -nthreads 8 && mv ./filtered_* ./track.tck
+	track=./track.tck
 elif [[ ${labels} == null ]] && [[ ! ${weights} == null ]]; then
 	cp ${weights} ./weights.csv
 	weights=./weights.csv
