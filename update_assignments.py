@@ -34,8 +34,8 @@ def update_assignments_csv(assignments,outpath):
     out_names = pd.DataFrame(names)
 
     # output csv files
-    out_index.to_csv(outpath+'/index.csv',index=False)
-    out_names.to_csv(outpath+'/names.csv',index=False)
+    out_index.to_csv(outpath+'/index.csv',index=False,header=False)
+    out_names.to_csv(outpath+'/names.csv',index=False,header=False)
 
 def main():
 
