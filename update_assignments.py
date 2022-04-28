@@ -8,11 +8,11 @@ def update_assignments_csv(assignments,outpath):
 
     # grab assignments file and rename columns for easier manipulation
     assignments = pd.read_csv(assignments,header=None)
-	assignments.rename(columns={0: 'pair1', 1: 'pair2'},inplace=True)
+    assignments.rename(columns={0: 'pair1', 1: 'pair2'},inplace=True)
 
     # identify unique node pairings from assignments. will exclude any instances where a streamline had a 0 assignment, meaning it did not connect nodes
-	unique_edges_unclean = assignments.groupby(['pair1','pair2']).count().index.values
-	unique_edges = list(map(list,set(map(frozenset,unique_edges_unclean))))
+    unique_edges_unclean = assignments.groupby(['pair1','pair2']).count().index.values
+    unique_edges = list(map(list,set(map(frozenset,unique_edges_unclean))))
     unique_edges = [ f for f in unique_edges if len(f) == 2 and f[0] != 0 and f[1] != 0 ]
 
     # loop through unique edges and create "classification" structure essentially. REALLY SLOW. NEED TO FIGURE OUT HOW TO SPEED UP.
