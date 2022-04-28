@@ -38,9 +38,6 @@ def update_assignments_csv(assignments,outpath):
 
 def main():
 
-    with open('config.json','r') as config_f:
-        config = json.load(config_f)
-
     assignments = './connectomes/assignments.csv'
 
     outdir = './assignments'
