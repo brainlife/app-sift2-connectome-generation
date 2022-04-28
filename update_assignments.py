@@ -12,20 +12,22 @@ def update_assignments_csv(assignments,outpath):
 
     # identify unique node pairings from assignments. will exclude any instances where a streamline had a 0 assignment, meaning it did not connect nodes
     unique_edges_unclean = assignments.groupby(['pair1','pair2']).count().index.values
-    unique_edges = list(map(list,set(map(frozenset,unique_edges_unclean))))
-    unique_edges = [ f for f in unique_edges if len(f) == 2 and f[0] != 0 and f[1] != 0 ]
+    unique_edges = [ list(f) for f in unique_edges_unclean if f[0] != 0 and f[1] != 0 ]
+    unique_names = [ str(f[0]) + "_" + str(f[1]) for f in unique_edges ]
+    unique_indexes = [ f+1 for f in range(len(unique_edges))]
+    labels_dict = {unique_names[i]: str(unique_indexes[i]) for i in range(len(unique_edges))}
 
-    # loop through unique edges and create "classification" structure essentially. REALLY SLOW. NEED TO FIGURE OUT HOW TO SPEED UP.
-    indices = pd.Series([ 0 for f in range(len(assignments)) ])
-    names = pd.Series([ "not-classified" for f in range(len(assignments)) ])
+    # create temporary column combining the roi pair names
+    assignments["combined_name"] = assignments['pair1'].astype(str) + "_" + assignments['pair2'].astype(str)
 
-    for i in range(len(unique_edges)):
-        tmp_edges = unique_edges[i]
+    # generate indexes for each streamline
+    assignments['index'] = assignments["combined_name"].map(labels_dict)
+    assignments['index'] = [ int(f) if f is not np.nan else 0 for f in assignments["index"] ]
+    assignments.combined_name = np.where(assignments["index"].eq(0), "not-classified", assignments.combined_name)
 
-        tmp = assignments.loc[(assignments['pair1'] == tmp_edges[0]) & (assignments['pair2'] == tmp_edges[1])]
 
-        indices[tmp.index.values.tolist()] = i+1
-        names[tmp.index.values.tolist()] = "ROI_"+str(tmp_edges[0])+"_ROI_"+str(tmp_edges[1])
+    indices = assignments['index'].values.tolist()
+    names = assignments['combined_name'].values.tolist()
 
     # set up output csvs
     out_index = pd.DataFrame(indices)
@@ -34,7 +36,6 @@ def update_assignments_csv(assignments,outpath):
     # output csv files
     out_index.to_csv(outpath+'/index.csv',index=False)
     out_names.to_csv(outpath+'/names.csv',index=False)
-
 
 def main():
 
