@@ -6,7 +6,7 @@ import pandas as pd
 
 def extract_streamline_weights():
 
-    with open('config.json','r') config_f:
+    with open('config.json','r') as config_f:
         config = json.load(config_f)
 
     labels = pd.read_csv(config['labels'])
