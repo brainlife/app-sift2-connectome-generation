@@ -92,7 +92,7 @@ for i in ${measures_to_loop}
 do
 	tmp=$(eval "echo \$${i}")
 
-	if [[ ! -f ${tmp} ]]; then
+	if [ -f ${tmp} ]; then
 		measures=$measures"${i} "
 	fi
 done
@@ -112,42 +112,37 @@ if [ ! -f parc.mif ]; then
 	mrconvert ${parc} parc.mif -force -nthreads ${ncores} -quiet
 fi
 
+#### generate connectomes ####
+## microstructural networks from diffusion data
 # diffusion measures (if inputted)
 if [[ ! -z ${measures} ]]; then
 	for MEAS in ${measures}
 	do
-		if [[ ! ${MEAS} == 'null' ]]; then
-			if [ ! -f ${MEAS}.mif ]; then
-				echo "converting ${MEAS}"
-				measure=$(eval "echo \$${MEAS}")
-				mrconvert ${measure} ${MEAS}.mif -force -nthreads ${ncores} -force -quiet
-			fi
+		if [ ! -f ${MEAS}.mif ]; then
+			echo "converting ${MEAS}"
+			measure=$(eval "echo \$${MEAS}")
+			mrconvert ${measure} ${MEAS}.mif -force -nthreads ${ncores} -force -quiet
+		fi
+
+		if [ ! -f ./connectomes/${MEAS}_mean.csv ]; then
+			echo "creating connectome for diffusion measure ${MEAS}"
+			# sample the measure for each streamline
+			tcksample ${track} ${MEAS}.mif mean_${MEAS}_per_streamline.csv -stat_tck mean -use_tdi_fraction -nthreads ${ncores} -force
+
+			# generate mean measure connectome
+			tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
+
+			# generate mean measure connectome weighted by density
+			tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_density.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
+
+			# generate mean measure connectome weighted by streamline length
+			tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_length.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invlength -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
+
+			# generate mean measure connectome weighted by density and streamline length
+			tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_denlen.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -scale_invlength -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
 		fi
 	done
 fi
-
-#### generate connectomes ####
-# microstructure networks (if inputted)
-for MEAS in ${measures}
-do
-	if [ ! -f ./connectomes/${MEAS}_mean.csv ]; then
-		echo "creating connectome for diffusion measure ${MEAS}"
-		# sample the measure for each streamline
-		tcksample ${track} ${MEAS}.mif mean_${MEAS}_per_streamline.csv -stat_tck mean -use_tdi_fraction -nthreads ${ncores} -force
-
-		# generate mean measure connectome
-		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean.csv -scale_file mean_${MEAS}_per_streamline.csv -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
-
-		# generate mean measure connectome weighted by density
-		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_density.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
-
-		# generate mean measure connectome weighted by streamline length
-		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_length.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invlength -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
-
-		# generate mean measure connectome weighted by density and streamline length
-		tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_denlen.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -scale_invlength -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
-	fi
-done
 
 # count network
 if [ ! -f ./connectomes/count.csv ]; then
