@@ -11,7 +11,7 @@ time singularity exec -e docker://brainlife/mrtrix3:3.0.3 ./generate-connectomes
 
 # update assignments file to match our labels datatype
 [ ! -d assignments ] && mkdir -p assignments
-[ ! -f assignments/index.json ] echo "generating assignments labels datatype" && time singularity exec -e docker://brainlife/dipy:1.4.0 ./update_assignments.py
+[ ! -f assignments/index.json ] && echo "generating assignments labels datatype" && time singularity exec -e docker://brainlife/dipy:1.4.0 ./update_assignments.py
 
 
 # generate networkneuro datatype
