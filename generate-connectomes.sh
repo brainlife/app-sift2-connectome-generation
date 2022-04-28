@@ -3,7 +3,7 @@
 set -x
 set -e
 
-mkdir -p connectomes
+mkdir -p connectomes labels raw
 
 #### configurable parameters ####
 ad=`jq -r '.ad' config.json`
@@ -57,11 +57,11 @@ if [[ ! ${assignment_radial_search} == "4" ]]; then
 	cmd=$cmd" -assignment_radial_search ${assignment_radial_search}"
 fi
 
-if [[ ! ${assignment_reverse_search} == null ]]; then
+if [[ ! ${assignment_reverse_search} == "" ]]; then
 	cmd=$cmd" -assignment_reverse_search ${assignment_reverse_search}"
 fi
 
-if [[ ! ${assignment_forward_search} == null ]]; then
+if [[ ! ${assignment_forward_search} == "" ]]; then
 	cmd=$cmd" -assignment_forward_search ${assignment_forward_search}"
 fi
 
@@ -206,3 +206,5 @@ if [ -f ./connectomes/count.csv ] && [ -f ./connectomes/length.csv ]; then
 else
 	echo "something went wrong"
 fi
+
+[ ! -f ./labels/labels.csv ]
