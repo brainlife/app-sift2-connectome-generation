@@ -1,5 +1,5 @@
 [![Abcdspec-compliant](https://img.shields.io/badge/ABCD_Spec-v1.1-green.svg)](https://github.com/brain-life/abcd-spec)
-[![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-brainlife.app.395-blue.svg)](https://doi.org/10.25663/brainlife.app.395)
+[![Run on Brainlife.io](https://img.shields.io/badge/Brainlife-brainlife.app.617-blue.svg)](https://doi.org/10.25663/brainlife.app.517)
 
 # Structural Connectome MRTrix3 (SCMRT)
 
@@ -41,7 +41,7 @@ We kindly ask that you cite the following articles when publishing papers and co
 
 ### On Brainlife.io
 
-You can submit this App online at [https://doi.org/10.25663/brainlife.app.395](https://doi.org/10.25663/brainlife.app.395) via the 'Execute' tab.
+You can submit this App online at [https://doi.org/10.25663/brainlife.app.617](https://doi.org/10.25663/brainlife.app.617) via the 'Execute' tab.
 
 ### Running Locally (on your machine)
 
@@ -66,7 +66,10 @@ You can submit this App online at [https://doi.org/10.25663/brainlife.app.395](h
     "ndi": "/input/noddi/ndi.nii.gz",
     "isovf": "/input/noddi/isovf.nii.gz",
     "odi": "/input/noddi/odi.nii.gz",
-    "lmax": 8
+    "lmax": 8,
+    "assignment_radial_search": "4",
+    "assignment_reverse_search":    "",
+    "assignment_forward_search":    ""
 }
 ```
 
@@ -89,7 +92,7 @@ bl dataset download
 
 ## Output
 
-The main output of this App is a raw datatype containing all of the matrices generated, individual conmat dataytpes for count, length, density, and denlen, and a networkneuro datatypes for visualization.
+The main output of this App is a raw datatype containing all of the matrices generated, individual conmat dataytpes for count, length, density, and denlen, and a labels datatype containing the streamline assignments for each node pairing.
 
 #### Product.json
 
