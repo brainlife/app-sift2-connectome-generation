@@ -26,6 +26,7 @@ vip_map=`jq -r '.VIP' config.json`
 sir_map=`jq -r '.SIR' config.json`
 wf_map=`jq -r '.WF' config.json`
 myelin_map=`jq -r '.myelin_map' config.json`
+sm=`jq -r '.sphmean' config.json`
 track=`jq -r '.track' config.json`
 parc=`jq -r '.parc' config.json`
 label=`jq -r '.label' config.json`
@@ -73,7 +74,7 @@ if [[ ! ${assignment_forward_search} == "" ]]; then
 fi
 
 #### set up measures variable if diffusion measures included. if not, measures is null and bypasses diffusion measures lines ####
-measures_to_loop="ad fa md rd ga ak mk rk ndi odi isovf t1_map r1_map m0_map pd_map mtv_map vip_map sir_map wf_map myelin_map"
+measures_to_loop="ad fa md rd ga ak mk rk ndi odi isovf t1_map r1_map m0_map pd_map mtv_map vip_map sir_map wf_map myelin_map sm"
 
 measures=""
 for i in ${measures_to_loop}
