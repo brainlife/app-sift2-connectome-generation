@@ -26,6 +26,7 @@ rk=`jq -r '.rk' config.json`
 ndi=`jq -r '.ndi' config.json`
 odi=`jq -r '.odi' config.json`
 isovf=`jq -r '.isovf' config.json`
+sm=`jq -r '.sphmean' config.json`
 track=`jq -r '.track' config.json`
 parc=`jq -r '.parc' config.json`
 label=`jq -r '.label' config.json`
@@ -46,6 +47,10 @@ elif [ ! -f ${ndi} ] && [ -f ${ga} ]; then
 	measures="ad fa md rd ga ak mk rk"
 else
 	measures="ndi odi isovf"
+fi
+
+if [ -f ${sm} ]; then
+	measures=$measures" sm"
 fi
 
 #### conmat measures ####
