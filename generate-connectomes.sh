@@ -20,6 +20,7 @@ isovf=`jq -r '.isovf' config.json`
 track=`jq -r '.track' config.json`
 parc=`jq -r '.parc' config.json`
 label=`jq -r '.label' config.json`
+sm=`jq -r '.sphmean' config.json`
 #inflate=`jq -r '.lmax2' config.json`
 ncores=8
 
