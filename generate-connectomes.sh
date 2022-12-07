@@ -39,6 +39,10 @@ else
 	measures="ndi odi isovf"
 fi
 
+if [ -f ${sm} ]; then
+	measures=$measures" sm"
+fi
+
 #### conmat measures ####
 conmat_measures="count density length denlen"
 
