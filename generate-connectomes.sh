@@ -52,14 +52,6 @@ do
 	mkdir -p ${i}_out ${i}_out/csv
 done
 
-#### convert data to mif ####
-# fod
-if [ ! -f lmax${lmax}.mif ]; then
-	echo "converting fod"
-	fod=$(eval "echo \$lmax${lmax}")
-	mrconvert ${fod} lmax${lmax}.mif -force -nthreads ${ncores} -quiet
-fi
-
 for i in ${conmat_measures}
 do
 	mkdir -p ${i}_out ${i}_out/csv
