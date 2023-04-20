@@ -35,6 +35,7 @@ labels=`jq -r '.labels' config.json`
 assignment_radial_search=`jq -r '.assignment_radial_search' config.json` # numerical: default is 4mm
 assignment_reverse_search=`jq -r '.assignment_reverse_search' config.json` # numerical
 assignment_forward_search=`jq -r '.assignment_forward_search' config.json` # numerical
+length_vs_invlength=`jq -r '.inverse_length' config.json` # boolean: true == normalize length by invlen; false == normalize by len
 ncores=8
 
 #### copy and subsample tractogram if labels available, else use weights
@@ -125,10 +126,19 @@ if [[ ! -z ${measures} ]]; then
 			tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_density.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
 
 			# generate mean measure connectome weighted by streamline length
-			tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_length.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invlength -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
+			if [[ ${length_vs_invlength} == 'true' ]]; then
+				tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_length.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invlength -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
 
-			# generate mean measure connectome weighted by density and streamline length
-			tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_denlen.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -scale_invlength -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
+				# generate mean measure connectome weighted by density and streamline length
+				tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_denlen.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -scale_invlength -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
+				echo "{\"tags\": [\"inv_length\" ]}" > product.json
+			else
+				tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_length.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_length -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
+				
+				# generate mean measure connectome weighted by density and streamline length
+				tck2connectome ${track} parc.mif ./connectomes/${MEAS}_mean_denlen.csv -scale_file mean_${MEAS}_per_streamline.csv -scale_invnodevol -scale_length -stat_edge mean ${weights} ${cmd} -symmetric -zero_diagonal -nthreads ${ncores} -force
+				echo "{\"tags\": [\"length\" ]}" > product.json
+			fi
 		fi
 	done
 fi
