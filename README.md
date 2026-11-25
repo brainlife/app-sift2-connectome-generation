@@ -10,9 +10,9 @@
   <a href="https://github.com/brainlife/app-sift2-connectome-generation/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-lightgrey.svg" alt="MIT license"></a>
 </p>
 
-> ⚠️ **This branch, `sift2_v1.1_centers`, is the deprecated brainlife.io App Structural Connectome MRTrix3 (SCMRT) (SIFT2) - Deprecated** ([doi:10.25663/brainlife.app.394](https://doi.org/10.25663/brainlife.app.394)). It is kept so earlier results stay reproducible. Use **Structural Connectome MRTrix3 (SCMRT) (SIFT2)** ([doi:10.25663/brainlife.app.580](https://doi.org/10.25663/brainlife.app.580)) instead. The other Apps in this repository are listed under **Versions on brainlife.io** below.
+> **This branch, `sift2_v1.1_centers`, is the deprecated brainlife.io App Structural Connectome MRTrix3 (SCMRT) (SIFT2) - Deprecated** ([doi:10.25663/brainlife.app.394](https://doi.org/10.25663/brainlife.app.394)). It is kept so earlier results stay reproducible. Use **Structural Connectome MRTrix3 (SCMRT) (SIFT2)** ([doi:10.25663/brainlife.app.580](https://doi.org/10.25663/brainlife.app.580)) instead. The other Apps in this repository are listed under **Versions on brainlife.io** below.
 
-## 🧠 At a glance
+## At a glance
 
 <!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
 
@@ -20,13 +20,13 @@
 
 | | |
 |---|---|
-| 📥 **Inputs** | `neuro/track/tck` · `neuro/parcellation/volume` · `neuro/csd` · `neuro/mask` · `neuro/tensor` (optional) · `neuro/noddi` (optional) |
-| 📤 **Outputs** | `raw` · `neuro/conmat` ×4 |
-| 🐳 **Container** | `brainlife/mrtrix3:3.0.3` |
-| ⚙️ **Resources** | 8 CPUs · 32 GB memory · 4.5 h walltime |
-| 🔗 **Run it** | [doi.org/10.25663/brainlife.app.394](https://doi.org/10.25663/brainlife.app.394) |
+| **Inputs** | `neuro/track/tck` · `neuro/parcellation/volume` · `neuro/csd` · `neuro/mask` · `neuro/tensor` (optional) · `neuro/noddi` (optional) |
+| **Outputs** | `raw` · `neuro/conmat` ×4 |
+| **Container** | `brainlife/mrtrix3:3.0.3` |
+| **Resources** | 8 CPUs · 32 GB memory · 4.5 h walltime |
+| **Run it** | [doi.org/10.25663/brainlife.app.394](https://doi.org/10.25663/brainlife.app.394) |
 
-#### 📥 Inputs
+#### Inputs
 
 | Input | Datatype | Required | Description |
 |---|---|---|---|
@@ -37,7 +37,7 @@
 | `tensor` | `neuro/tensor` | no |  |
 | `noddi` | `neuro/noddi` | no |  |
 
-#### 📤 Outputs
+#### Outputs
 
 | Output | Datatype | Description |
 |---|---|---|
@@ -48,7 +48,7 @@
 | `denlen_out` | `neuro/conmat` |  |
 
 <details>
-<summary><b>⚙️ Parameters</b> (1)</summary>
+<summary><b>Parameters</b> (1)</summary>
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
@@ -58,7 +58,7 @@
 
 <!-- brainlife-app:end -->
 
-## 🏷️ Versions on brainlife.io
+## Versions on brainlife.io
 
 Each version is a separate App on brainlife.io, built from its own branch of this repository.
 
@@ -72,13 +72,13 @@ Each version is a separate App on brainlife.io, built from its own branch of thi
 
 The current App takes optional streamline labels and precomputed streamline weights (for example SIFT2 weights). The SIFT2 App computes the SIFT2 weights itself from CSD FODs and a five-tissue-type (5TT) image, and the SIFT2 and "No labels or weights" Apps also output a `neuro/networkneuro` datatype for visualisation on brainlife.io.
 
-## 🚀 Running the App
+## Running the App
 
-### ☁️ On brainlife.io
+### On brainlife.io
 
 Open the App at [doi.org/10.25663/brainlife.app.765](https://doi.org/10.25663/brainlife.app.765), choose a whole-brain tractogram (`neuro/track/tck`) and a volumetric parcellation in the same space, add any optional maps (tensor, NODDI, quantitative MRI, myelin map, spherical mean) and optional streamline labels or weights, and press **Execute**. The App archives the matrices to your project as a raw `networkmatrices` dataset, four `neuro/conmat` datasets (count, density, length, density-of-length) and a `neuro/labels` dataset with the streamline assignments.
 
-### 💻 Locally
+### Locally
 
 You need [Singularity/Apptainer](https://apptainer.org/) and [`jq`](https://jqlang.github.io/jq/). `main` runs MRtrix3 3.0.3 (`brainlife/mrtrix3:3.0.3`) and Python with DIPY 1.4.0 (`brainlife/dipy:1.4.0`) from containers.
 
@@ -113,7 +113,7 @@ You need [Singularity/Apptainer](https://apptainer.org/) and [`jq`](https://jqla
    ./main
    ```
 
-### 🧪 Sample data
+### Sample data
 
 Download sample datasets from brainlife.io with the [brainlife CLI](https://github.com/brainlife/cli):
 
@@ -124,7 +124,7 @@ mkdir input
 bl dataset download <dataset-id>
 ```
 
-## 📦 Outputs
+## Outputs
 
 ```text
 output/output/     all matrices as CSV: count, density, length, denlen,
@@ -139,12 +139,12 @@ assignments/       neuro/labels: streamline-to-node-pair assignments
 
 `inverse_length` chooses whether the length and density-of-length matrices are scaled by inverse length (`true`) or by length (`false`); the choice is recorded as a tag in `product.json`.
 
-## 🩺 Troubleshooting
+## Troubleshooting
 
 - **`something failed. check derivatives`**: `density.csv` was not written. Check that the tractogram and parcellation are in the same space; streamlines that end outside every parcel are not assigned to any node (increase `assignment_radial_search`, or set the reverse or forward search, to assign more endpoints).
 - **Labels and weights together**: when both are given, the weights are subset to the streamlines labelled 1, so the weights file must have one value per streamline of the input tractogram.
 
-## 📚 Citing
+## Citing
 
 > [!TIP]
 > If you use this App in your work, please cite the App, the software it builds on and brainlife.io (below). GitHub's **Cite this repository** button gives the App citation in APA and BibTeX.
@@ -158,13 +158,13 @@ assignments/       neuro/labels: streamline-to-node-pair assignments
 - Hayashi S, Caron BA, Heinsfeld AS, et al. brainlife.io: a decentralized and open-source cloud platform to support neuroscience research. *Nature Methods* 21:809–813 (2024). [doi:10.1038/s41592-024-02237-2](https://doi.org/10.1038/s41592-024-02237-2)
 - Avesani P, McPherson B, Hayashi S, et al. The open diffusion data derivatives, brain data upcycling via integrated publishing of derivatives and reproducible open cloud services. *Scientific Data* 6:69 (2019). [doi:10.1038/s41597-019-0073-y](https://doi.org/10.1038/s41597-019-0073-y)
 
-## 👥 Authors
+## Authors
 
 - Brad Caron
 
 **Contributors:** Soichi Hayashi, Franco Pestilli
 
-## 💰 Funding
+## Funding
 
 [![Wellcome-226486/Z/22/Z](https://img.shields.io/badge/Wellcome-226486%2FZ%2F22%2FZ-purple.svg)](https://wellcome.org/)
 [![NIH-NINDS-U24NS140384](https://img.shields.io/badge/NIH_NINDS-U24NS140384-green.svg)](https://reporter.nih.gov/project-details/11261037)
@@ -183,6 +183,6 @@ assignments/       neuro/labels: streamline-to-node-pair assignments
 
 <sub>brainlife.io is publicly funded, and acknowledging that support helps keep it running. This App was developed with support from Wellcome, the U.S. National Institutes of Health (including the BRAIN Initiative BRAIN CONNECTS program: The Axonal Projectome EXchange, U24NS140384, and the Center for Mesoscale Connectomics, UM1NS132207) and the U.S. National Science Foundation.</sub>
 
-## ⚖️ License
+## License
 
 [MIT](https://github.com/brainlife/app-sift2-connectome-generation/blob/master/LICENSE). MRtrix3 is distributed under its own [license](https://www.mrtrix.org/).
