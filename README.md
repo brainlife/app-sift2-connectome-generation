@@ -14,11 +14,19 @@
 
 <!-- brainlife-app:begin (generated from the App manifest; edit the manifest, not this block) -->
 
-**Builds structural connectivity matrices (count, density, length and mean diffusion or quantitative MRI measures) from a tractogram and volumetric parcellation with MRtrix3 tck2connectome, optionally using streamline labels and weights.**
+> **Builds structural connectivity matrices (count, density, length and mean diffusion or quantitative MRI measures) from a tractogram and volumetric parcellation with MRtrix3 tck2connectome, optionally using streamline labels and weights.**
 
 Optionally filters the tractogram by a binary streamline labels file and applies precomputed streamline weights, then builds symmetric count, density, length and density-of-length matrices and mean-measure matrices for any tensor, NODDI, quantitative MRI, myelin or spherical-mean maps supplied. Endpoint-to-node assignment can be tuned with radial, reverse and forward search options. Also outputs the streamline assignments as a labels datatype.
 
-Run it on brainlife.io: [https://doi.org/10.25663/brainlife.app.765](https://doi.org/10.25663/brainlife.app.765)
+| | |
+|---|---|
+| 📥 **Inputs** | `neuro/track/tck` · `neuro/parcellation/volume` · `neuro/tensor` (optional) · `neuro/noddi` (optional) · `neuro/labels` (optional) · `neuro/streamline-weights` (optional) · `neuro/anat/qmri` (optional) · `neuro/myelin-map` (optional) · `neuro/spherical-mean` (optional) |
+| 📤 **Outputs** | `raw` · `neuro/conmat` ×4 · `neuro/labels` |
+| 🐳 **Container** | `brainlife/dipy:1.4.0` |
+| ⚙️ **Resources** | 8 CPUs · 1.5 h walltime |
+| 🔗 **Run it** | [doi.org/10.25663/brainlife.app.765](https://doi.org/10.25663/brainlife.app.765) |
+
+#### 📥 Inputs
 
 | Input | Datatype | Required | Description |
 |---|---|---|---|
@@ -32,6 +40,8 @@ Run it on brainlife.io: [https://doi.org/10.25663/brainlife.app.765](https://doi
 | `myelin_map` | `neuro/myelin-map` | no | Optional myelin map; used to build a mean-measure matrix. |
 | `sm` | `neuro/spherical-mean` | no | Optional spherical-mean map; used to build a mean-microstructure matrix. |
 
+#### 📤 Outputs
+
 | Output | Datatype | Description |
 |---|---|---|
 | `output` | `raw` | All connectivity matrices as CSV files (count, density, length, density-of-length and per-measure mean matrices). |
@@ -41,6 +51,9 @@ Run it on brainlife.io: [https://doi.org/10.25663/brainlife.app.765](https://doi
 | `denlen_out` | `neuro/conmat` | Connectivity matrix datatype (csv/correlation.csv with label.json) of length-scaled counts normalised by inverse node volume. |
 | `assignments` | `neuro/labels` | Streamline-to-node-pair assignments from tck2connectome as a labels datatype. |
 
+<details>
+<summary><b>⚙️ Parameters</b> (4)</summary>
+
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `assignment_radial_search` | number | `4` | perform a radial search from each streamline endpoint to locate the nearest node. Argument is the maximum radius in mm; if no node is found within this radius, the streamline endpoint is not assigned to any node. Default search distance is 4mm. |
@@ -48,7 +61,7 @@ Run it on brainlife.io: [https://doi.org/10.25663/brainlife.app.765](https://doi
 | `assignment_forward_search` | string |  | project the streamline forwards from the endpoint in search of a parcellation node voxel. Argument is the maximum traversal length in mm. |
 | `inverse_length` | boolean | `true` | if you want to scale the length and den len matrices by either inverse length (true) or the length (false) |
 
-Runtime: container `brainlife/dipy:1.4.0`; 8 CPUs; 1.5 h walltime.
+</details>
 
 <!-- brainlife-app:end -->
 
