@@ -9,7 +9,7 @@ This app will generate structural connectome adjacency matrices to use in graph 
 - [Bradley Caron](bacaron@iu.edu)
 
 # Contributors
-- [Franco Pestilli](pestilli@utexas.edu)
+- [Franco Pestilli]([@francopestilli](https://github.com/francopestilli))
 - [Soichi Hayashi](hayashis@iu.edu)
 
 # Please cite the following work and funding when using this code.
